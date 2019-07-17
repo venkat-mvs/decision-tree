@@ -25,9 +25,7 @@ def best(t_head,t_body):# best attribute according to information gain
         dic[t_head[i]] = round(Gain(t_head[i],t_head,t_body),3)
     return max(dic.items(),key=lambda x:x[1])[0]
 
-maj =  "yes" #majority class considered staticly
-
-def genrate_tree(t_head,t_body):
+def genrate_tree(t_head,t_body,maj="yes"):
     n = {}
     ds = distinct(t_head.index("class"),t_body)
     if len(ds["outcomes"]) == 1:
@@ -40,15 +38,14 @@ def genrate_tree(t_head,t_body):
     for i in div:
         if len(i) == 0:
             return maj
-        n[split_point][i] = genrate_tree(new_t_head[:],div[i])
+        n[split_point][i] = genrate_tree(new_t_head[:],div[i],maj)
     return n
-def tree(file_name,meta):
+def tree(file_name,meta,maj):
     for data_type in meta.values():
         if data_type == "numeric":
             raise ValueError("ID3 Algorithm does'nt allow numeric")
     tuples_head,tuples_body = load_data_with_meta(file_name,meta)
-    return genrate_tree(list(tuples_head),tuples_body) 
-pprint.pprint(tree(buys_computer_file,buys_computer_meta))
+    return genrate_tree(list(tuples_head),tuples_body,maj) 
 def predict(tree,data_tuple):
     '''
     tree={}
@@ -56,5 +53,6 @@ def predict(tree,data_tuple):
     '''
     
     pass
-
+if __name__ == "__main__":
+    pprint.pprint(tree(buys_computer_file,buys_computer_meta,"yes"))
 #made by venkat 

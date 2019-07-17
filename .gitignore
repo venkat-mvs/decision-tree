@@ -1,4 +1,5 @@
-__pycahe__
 *.json
 test2.csv
 test3.csv
+__pycache__
+.gitignore
